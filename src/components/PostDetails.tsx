@@ -35,8 +35,8 @@ export const PostDetails: React.FC<Props> = ({ post, onClose }) => {
     setComments(updatedComments);
 
     client.delete(`/comments/${commentId}`).catch(() => {
-      setComments(comments);
-      setError('Failed to delete comment');
+      // Не відкатюємо зміни, лише логуємо помилку або показуємо повідомлення
+      setError('Failed to delete comment on server');
     });
   };
 
@@ -64,7 +64,7 @@ export const PostDetails: React.FC<Props> = ({ post, onClose }) => {
         {isLoading && <Loader />}
         {error && (
           <div className="notification is-danger" data-cy="CommentsError">
-            Something went wrong
+            {error}
           </div>
         )}
         {!isLoading && !error && comments.length === 0 && (
@@ -110,7 +110,6 @@ export const PostDetails: React.FC<Props> = ({ post, onClose }) => {
             className="button is-link"
             onClick={() => setShowForm(true)}
           >
-            {' '}
             Write a comment
           </button>
         )}

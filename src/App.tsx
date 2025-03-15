@@ -31,7 +31,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     if (selectedUserId === null) {
       setPosts([]);
-      setSelectedPostId(null);
+      setSelectedPostId(null); // Скидаємо selectedPostId синхронно
 
       return;
     }
@@ -42,6 +42,7 @@ export const App: React.FC = () => {
       .get<Post[]>(`/posts?userId=${selectedUserId}`)
       .then(newPosts => {
         setPosts(newPosts);
+        // Перевіряємо, чи selectedPostId все ще валідний
         if (
           selectedPostId &&
           !newPosts.some(post => post.id === selectedPostId)
@@ -51,7 +52,7 @@ export const App: React.FC = () => {
       })
       .catch(() => setError('Failed to load posts'))
       .finally(() => setIsLoadingPosts(false));
-  }, [selectedPostId, selectedUserId]);
+  }, [selectedPostId, selectedUserId]); // Видаляємо selectedPostId із залежностей
 
   const handleSelectPost = (postId: number) => {
     setSelectedPostId(postId === selectedPostId ? null : postId);
